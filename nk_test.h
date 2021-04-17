@@ -16,33 +16,33 @@
 extern "C" {
 #endif
 
-#define NK_TEST__TEST(test_name)                                       \
+#define NK_TEST__TEST(test_name)                                            \
     {                                                                       \
         .test_fn = test_name,                                               \
         .name = # test_name                                                 \
     }
 
-#define NK_TEST__TEST_TERMINATE()                                      \
+#define NK_TEST__TEST_TERMINATE()                                           \
     {                                                                       \
         .test_fn = NULL,                                                    \
         .name = NULL                                                        \
     }
 
-#define NK_TEST__EXPECT_SIZE(a_number)                                 \
+#define NK_TEST__EXPECT_SIZE(a_number)                                      \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.size = (a_number);                                              \
         np_testsuite__expect(val, NP_TESTSUITE__TYPE_SIZE);                 \
     } while (0)
 
-#define NK_TESTSUITE__EXPECT_UINT(a_number)                                 \
+#define NK_TEST__EXPECT_UINT(a_number)                                      \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.ui = (a_number);                                                \
         np_testsuite__expect(val, NP_TESTSUITE__TYPE_UINT);                 \
     } while (0)
 
-#define NK_TEST__EXPECT_INT(a_number)                                  \
+#define NK_TEST__EXPECT_INT(a_number)                                       \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.si = (a_number);                                                \
@@ -63,7 +63,7 @@ extern "C" {
         np_testsuite__expect(val, NP_TESTSUITE__TYPE_STR);                  \
     } while (0)
 
-#define NK_TEST__EXPECT_BOOL(a_bool)                                   \
+#define NK_TEST__EXPECT_BOOL(a_bool)                                        \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.b = (a_bool);                                                   \
@@ -121,7 +121,7 @@ extern "C" {
         }                                                                   \
     } while (0)
 
-#define NK_TESTSUITE__ACTUAL_UINT(a_number)                                 \
+#define NK_TEST__ACTUAL_UINT(a_number)                                 \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.ui = (a_number);                                                \

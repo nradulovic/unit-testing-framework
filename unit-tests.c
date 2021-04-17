@@ -10,6 +10,7 @@
 #include "test_cases/test_nk_array.h"
 #include "test_cases/test_nk_fqueue.h"
 #include "test_cases/test_nk_string.h"
+#include "test_cases/test_nk_manchester.h"
 
 int
 main(int argc, char **argv)
@@ -24,6 +25,7 @@ main(int argc, char **argv)
     test_nk_array();
     test_nk_fqueue();
     test_nk_string();
+    test_nk_manchester();
 
     return nk_testsuite__epilogue();
 }
