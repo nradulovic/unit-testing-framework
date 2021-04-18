@@ -133,6 +133,33 @@ test__ref__get(void)
 }
 
 static void
+test__clear(void)
+{
+#define TEST_ITEM_NO            128
+#define TEST_ITEM_TYPE          int
+    /* Allocate external storage which is to be used by array */
+    TEST_ITEM_TYPE items_buffer[TEST_ITEM_NO];
+    /* Create our CUT array type: structure my_char_array */
+    struct my_char_array
+        NK_ARRAY__T(TEST_ITEM_TYPE)
+    my_array;
+    /* Initialize the array */
+    NK_ARRAY__INITIALIZE(&my_array, TEST_ITEM_NO, items_buffer);
+    /* Fill in the array with numbers */
+    for (size_t i = 0u; i < my_array.item_no; i++) {
+        my_array.items[i] = (int) i;
+        my_array.length += 1;
+    }
+    my_array.length = 0u;
+    NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
+    NK_TEST__EXPECT_SIZE(my_array.item_no);
+    NK_TEST__EXPECT_SIZE(0u);
+    NK_TEST__EXPECT_SIZE(my_array.length);
+#undef TEST_ITEM_NO
+#undef TEST_ITEM_TYPE
+}
+
+static void
 test_array_bucket__construction__initializer(void)
 {
 #define TEST_ITEM_NO            16
@@ -228,6 +255,7 @@ test_nk_array(void)
     NK_TEST__TEST(test__construction__initialize),
     NK_TEST__TEST(test__ref__set),
     NK_TEST__TEST(test__ref__get),
+    NK_TEST__TEST(test__clear),
     NK_TEST__TEST(test_array_bucket__construction__initializer),
     NK_TEST__TEST(test_array_bucket__construction__initializer_with),
     NK_TEST__TEST(test_array_bucket__construction__initialize),
