@@ -12,80 +12,233 @@
 #if defined(NK_ENABLED_STRING)
 
 static void
-test__construction__initializer(void)
+test__construction__initializer_0(void)
 {
 #define TEST_STRING_SIZE 16
     char string_buffer[TEST_STRING_SIZE] = { 0 };
 
-    struct nk_string my_string = NK_STRING__INITIALIZER(string_buffer);
-    NK_TEST__EXPECT_SIZE(0);
-    NK_TEST__ACTUAL_SIZE(nk_string__length(&my_string));
+    struct nk_string my_string = NK_STRING__INITIALIZER(string_buffer, 0u);
+    NK_TEST__EXPECT_SIZE(0u);
+    NK_TEST__ACTUAL_SIZE(my_string.length);
     NK_TEST__EXPECT_SIZE(TEST_STRING_SIZE);
-    NK_TEST__ACTUAL_SIZE(nk_string__size(&my_string));
+    NK_TEST__ACTUAL_SIZE(my_string.item_no);
 #undef TEST_STRING_SIZE
 }
 
 static void
-test__construction__initialize(void)
+test__construction__initializer_4(void)
+{
+#define TEST_STRING_SIZE 16
+    char string_buffer[TEST_STRING_SIZE] = "nesa";
+
+    struct nk_string my_string = NK_STRING__INITIALIZER(string_buffer, 4u);
+    NK_TEST__EXPECT_SIZE(TEST_STRING_SIZE);
+    NK_TEST__ACTUAL_SIZE(my_string.item_no);
+    NK_TEST__EXPECT_SIZE(4u);
+    NK_TEST__ACTUAL_SIZE(my_string.length);
+    NK_TEST__EXPECT_INT('n');
+    NK_TEST__ACTUAL_INT(my_string.items[0]);
+    NK_TEST__EXPECT_INT('e');
+    NK_TEST__ACTUAL_INT(my_string.items[1]);
+    NK_TEST__EXPECT_INT('s');
+    NK_TEST__ACTUAL_INT(my_string.items[2]);
+    NK_TEST__EXPECT_INT('a');
+    NK_TEST__ACTUAL_INT(my_string.items[3]);
+#undef TEST_STRING_SIZE
+}
+
+static void
+test__construction__initializer_empty(void)
+{
+#define TEST_STRING_SIZE 16
+#define TEST_STRING "some string"
+    char string_buffer[TEST_STRING_SIZE] = { TEST_STRING };
+    struct nk_string my_string = NK_STRING__INITIALIZER_EMPTY(string_buffer);
+
+    NK_TEST__EXPECT_SIZE(0u);
+    NK_TEST__ACTUAL_SIZE(my_string.length);
+    NK_TEST__EXPECT_SIZE(TEST_STRING_SIZE);
+    NK_TEST__ACTUAL_SIZE(my_string.item_no);
+#undef TEST_STRING
+#undef TEST_STRING_SIZE
+}
+
+static void
+test__construction__initialize_0(void)
 {
 #define TEST_STRING_SIZE 16
     char string_buffer[TEST_STRING_SIZE] = { 0 };
 
     struct nk_string my_string;
 
-    NK_STRING__INITIALIZE(&my_string, string_buffer);
-    NK_TEST__EXPECT_SIZE(0);
-    NK_TEST__ACTUAL_SIZE(nk_string__length(&my_string));
+    nk_string__initialize(&my_string, string_buffer, sizeof(string_buffer), 0u);
+    NK_TEST__EXPECT_SIZE(0u);
+    NK_TEST__ACTUAL_SIZE(my_string.length);
     NK_TEST__EXPECT_SIZE(TEST_STRING_SIZE);
-    NK_TEST__ACTUAL_SIZE(nk_string__size(&my_string));
-    for (size_t i = 0u; i < nk_string__size(&my_string); i++) {
-        NK_TEST__EXPECT_INT(0);
-        NK_TEST__ACTUAL_INT(nk_string__char(&my_string, i));
-    }
+    NK_TEST__ACTUAL_SIZE(my_string.item_no);
 #undef TEST_STRING_SIZE
 }
 
 static void
-test__bucket_construction__initializer(void)
+test__construction__initialize_4(void)
 {
-#define TEST_STRING_SIZE 20
-    struct my_string_type
-        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
-    my_string =
-    NK_STRING__BUCKET_INITIALIZER(&my_string);
-    NK_TEST__EXPECT_SIZE(0);
-    NK_TEST__ACTUAL_SIZE(nk_string__length(&my_string.string));
-    NK_TEST__EXPECT_SIZE(TEST_STRING_SIZE);
-    NK_TEST__ACTUAL_SIZE(nk_string__size(&my_string.string));
-    for (size_t i = 0u; i < nk_string__size(&my_string.string); i++) {
-        NK_TEST__EXPECT_INT(0);
-        NK_TEST__ACTUAL_INT(nk_string__char(&my_string.string, i));
-    }
-#undef TEST_STRING_SIZE
-}
+#define TEST_STRING_SIZE 16
+    char string_buffer[TEST_STRING_SIZE] = "nesa";
 
-static void
-test__bucket_construction__initializer_from(void)
-{
-#define TEST_STRING_SIZE 20
-    struct my_string_type
-        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
-    my_string =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string, "Hello");
-    NK_TEST__EXPECT_SIZE(5);
-    NK_TEST__ACTUAL_SIZE(nk_string__length(&my_string.string));
+    struct nk_string my_string;
+
+    nk_string__initialize(&my_string, string_buffer, sizeof(string_buffer), 4u);
+    NK_TEST__EXPECT_SIZE(4u);
+    NK_TEST__ACTUAL_SIZE(my_string.length);
     NK_TEST__EXPECT_SIZE(TEST_STRING_SIZE);
-    NK_TEST__ACTUAL_SIZE(nk_string__size(&my_string.string));
-    NK_TEST__EXPECT_INT('H');
-    NK_TEST__ACTUAL_INT(nk_string__char(&my_string.string, 0));
+    NK_TEST__ACTUAL_SIZE(my_string.item_no);
+    NK_TEST__EXPECT_INT('n');
+    NK_TEST__ACTUAL_INT(my_string.items[0]);
     NK_TEST__EXPECT_INT('e');
-    NK_TEST__ACTUAL_INT(nk_string__char(&my_string.string, 1));
-    NK_TEST__EXPECT_INT('l');
-    NK_TEST__ACTUAL_INT(nk_string__char(&my_string.string, 2));
-    NK_TEST__EXPECT_INT('l');
-    NK_TEST__ACTUAL_INT(nk_string__char(&my_string.string, 3));
-    NK_TEST__EXPECT_INT('o');
-    NK_TEST__ACTUAL_INT(nk_string__char(&my_string.string, 4));
+    NK_TEST__ACTUAL_INT(my_string.items[1]);
+    NK_TEST__EXPECT_INT('s');
+    NK_TEST__ACTUAL_INT(my_string.items[2]);
+    NK_TEST__EXPECT_INT('a');
+    NK_TEST__ACTUAL_INT(my_string.items[3]);
+#undef TEST_STRING_SIZE
+}
+
+static void
+test__construction__initialize_empty(void)
+{
+#define TEST_STRING_SIZE 16
+    char string_buffer[TEST_STRING_SIZE] = { 0 };
+
+    struct nk_string my_string;
+
+    nk_string__initialize_empty(&my_string, string_buffer, sizeof(string_buffer));
+    NK_TEST__EXPECT_SIZE(0u);
+    NK_TEST__ACTUAL_SIZE(my_string.length);
+    NK_TEST__EXPECT_SIZE(TEST_STRING_SIZE);
+    NK_TEST__ACTUAL_SIZE(my_string.item_no);
+#undef TEST_STRING_SIZE
+}
+
+static void
+test__bucket_construction__initializer_0(void)
+{
+#define TEST_STRING_SIZE 20
+    struct my_string_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string =
+    NK_STRING__BUCKET_INITIALIZER(&my_string, "");
+    NK_TEST__EXPECT_SIZE(0u);
+    NK_TEST__ACTUAL_SIZE(my_string.array.length);
+    NK_TEST__EXPECT_SIZE(TEST_STRING_SIZE);
+    NK_TEST__ACTUAL_SIZE(my_string.array.item_no);
+#undef TEST_STRING_SIZE
+}
+
+static void
+test__bucket_construction__initializer_4(void)
+{
+#define TEST_STRING_SIZE 20
+    struct my_string_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string =
+    NK_STRING__BUCKET_INITIALIZER(&my_string, "nesa");
+    NK_TEST__EXPECT_SIZE(4u);
+    NK_TEST__ACTUAL_SIZE(my_string.array.length);
+    NK_TEST__EXPECT_SIZE(TEST_STRING_SIZE);
+    NK_TEST__ACTUAL_SIZE(my_string.array.item_no);
+    NK_TEST__EXPECT_INT('n');
+    NK_TEST__ACTUAL_INT(my_string.array.items[0]);
+    NK_TEST__EXPECT_INT('e');
+    NK_TEST__ACTUAL_INT(my_string.array.items[1]);
+    NK_TEST__EXPECT_INT('s');
+    NK_TEST__ACTUAL_INT(my_string.array.items[2]);
+    NK_TEST__EXPECT_INT('a');
+    NK_TEST__ACTUAL_INT(my_string.array.items[3]);
+#undef TEST_STRING_SIZE
+}
+
+static void
+test__bucket_construction__initializer_empty(void)
+{
+#define TEST_STRING_SIZE 20
+    struct my_string_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string =
+    NK_STRING__BUCKET_INITIALIZER_EMPTY(&my_string);
+    NK_TEST__EXPECT_SIZE(0u);
+    NK_TEST__ACTUAL_SIZE(my_string.array.length);
+    NK_TEST__EXPECT_SIZE(TEST_STRING_SIZE);
+    NK_TEST__ACTUAL_SIZE(my_string.array.item_no);
+#undef TEST_STRING_SIZE
+}
+
+static void
+test__bucket_construction__initialize_0(void)
+{
+#define TEST_STRING_SIZE 20
+    struct my_string_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string;
+    NK_STRING__BUCKET_INITIALIZE(&my_string, NULL, 0u);
+    NK_TEST__EXPECT_SIZE(0u);
+    NK_TEST__ACTUAL_SIZE(my_string.array.length);
+    NK_TEST__EXPECT_SIZE(TEST_STRING_SIZE);
+    NK_TEST__ACTUAL_SIZE(my_string.array.item_no);
+#undef TEST_STRING_SIZE
+}
+
+static void
+test__bucket_construction__initialize_4(void)
+{
+#define TEST_STRING_SIZE 20
+    char static_buffer[] = "nesa";
+    struct my_string_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string;
+    NK_STRING__BUCKET_INITIALIZE(&my_string, static_buffer, 4u);
+    NK_TEST__EXPECT_SIZE(4u);
+    NK_TEST__ACTUAL_SIZE(my_string.array.length);
+    NK_TEST__EXPECT_SIZE(TEST_STRING_SIZE);
+    NK_TEST__ACTUAL_SIZE(my_string.array.item_no);
+    NK_TEST__EXPECT_INT('n');
+    NK_TEST__ACTUAL_INT(my_string.array.items[0]);
+    NK_TEST__EXPECT_INT('e');
+    NK_TEST__ACTUAL_INT(my_string.array.items[1]);
+    NK_TEST__EXPECT_INT('s');
+    NK_TEST__ACTUAL_INT(my_string.array.items[2]);
+    NK_TEST__EXPECT_INT('a');
+    NK_TEST__ACTUAL_INT(my_string.array.items[3]);
+#undef TEST_STRING_SIZE
+}
+
+static void
+test__bucket_construction__initialize_empty(void)
+{
+#define TEST_STRING_SIZE 20
+    struct my_string_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string;
+    NK_STRING__BUCKET_INITIALIZE_EMPTY(&my_string);
+    NK_TEST__EXPECT_SIZE(0u);
+    NK_TEST__ACTUAL_SIZE(my_string.array.length);
+    NK_TEST__EXPECT_SIZE(TEST_STRING_SIZE);
+    NK_TEST__ACTUAL_SIZE(my_string.array.item_no);
+#undef TEST_STRING_SIZE
+}
+
+static void
+test__bucket_construction__initialize_with(void)
+{
+#define TEST_STRING_SIZE 20
+    char c_string_buffer[] = "Hello";
+    struct my_string_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string;
+    NK_STRING__BUCKET_INITIALIZE_WITH(&my_string, c_string_buffer);
+    NK_TEST__EXPECT_SIZE(5u);
+    NK_TEST__ACTUAL_SIZE(my_string.array.length);
+    NK_TEST__EXPECT_SIZE(TEST_STRING_SIZE);
+    NK_TEST__ACTUAL_SIZE(my_string.array.item_no);
 #undef TEST_STRING_SIZE
 }
 
@@ -96,13 +249,13 @@ test__is_equal__true__same_size(void)
     struct my_string1_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string1 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string1, "Hello");
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello");
     struct my_string2_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string2 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string2, "Hello");
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, "Hello");
     NK_TEST__EXPECT_BOOL(true);
-    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.string, &my_string2.string));
+    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string2.array));
 #undef TEST_STRING_SIZE
 }
 
@@ -113,13 +266,13 @@ test__is_equal__true__different_size(void)
     struct my_string1_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string1 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string1, "Hello");
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello");
     struct my_string2_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE / 2u)
     my_string2 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string2, "Hello");
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, "Hello");
     NK_TEST__EXPECT_BOOL(true);
-    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.string, &my_string2.string));
+    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string2.array));
 #undef TEST_STRING_SIZE
 }
 
@@ -130,13 +283,13 @@ test__is_equal__false__same_size(void)
     struct my_string1_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string1 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string1, "Hello");
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello");
     struct my_string2_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string2 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string2, "Zdrav");
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, "Zdrav");
     NK_TEST__EXPECT_BOOL(false);
-    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.string, &my_string2.string));
+    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string2.array));
 #undef TEST_STRING_SIZE
 }
 
@@ -147,13 +300,13 @@ test__is_equal__false__different_size(void)
     struct my_string1_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string1 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string1, "Hello");
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello");
     struct my_string2_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string2 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string2, "Zdravo!");
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, "Zdravo!");
     NK_TEST__EXPECT_BOOL(false);
-    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.string, &my_string2.string));
+    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string2.array));
 #undef TEST_STRING_SIZE
 }
 
@@ -164,19 +317,19 @@ test__view(void)
     struct my_string1_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string1 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string1, "Hello");
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello");
     struct my_string2_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string2 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string2, "ell");
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, "ell");
 
-    struct nk_string string_view = nk_string__view(&my_string1.string, 1, 4);
+    struct nk_string string_view = nk_string__view(&my_string1.array, 1, 4);
     NK_TEST__EXPECT_SIZE(3);
     NK_TEST__ACTUAL_SIZE(nk_string__length(&string_view));
     NK_TEST__EXPECT_SIZE(3);
     NK_TEST__ACTUAL_SIZE(nk_string__size(&string_view));
     NK_TEST__EXPECT_BOOL(true);
-    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&string_view, &my_string2.string));
+    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&string_view, &my_string2.array));
 #undef TEST_STRING_SIZE
 }
 
@@ -187,14 +340,14 @@ test__contains__true(void)
     struct my_string1_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string1 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string1, "Hello, World!");
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello, World!");
     struct my_string2_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string2 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string2, "World");
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, "World");
 
     NK_TEST__EXPECT_BOOL(true);
-    NK_TEST__ACTUAL_BOOL(nk_string__contains(&my_string1.string, &my_string2.string));
+    NK_TEST__ACTUAL_BOOL(nk_string__contains(&my_string1.array, &my_string2.array));
 #undef TEST_STRING_SIZE
 }
 
@@ -205,14 +358,14 @@ test__contains__false__smaller_length(void)
     struct my_string1_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string1 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string1, "Hello, World!");
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello, World!");
     struct my_string2_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string2 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string2, "world");
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, "world");
 
     NK_TEST__EXPECT_BOOL(false);
-    NK_TEST__ACTUAL_BOOL(nk_string__contains(&my_string1.string, &my_string2.string));
+    NK_TEST__ACTUAL_BOOL(nk_string__contains(&my_string1.array, &my_string2.array));
 #undef TEST_STRING_SIZE
 }
 
@@ -223,14 +376,14 @@ test__contains__false__bigger_length(void)
     struct my_string1_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string1 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string1, "Hello, World!");
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello, World!");
     struct my_string2_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string2 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string2, "Hello my friend");
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, "Hello my friend");
 
     NK_TEST__EXPECT_BOOL(false);
-    NK_TEST__ACTUAL_BOOL(nk_string__contains(&my_string1.string, &my_string2.string));
+    NK_TEST__ACTUAL_BOOL(nk_string__contains(&my_string1.array, &my_string2.array));
 #undef TEST_STRING_SIZE
 }
 
@@ -241,14 +394,14 @@ test__endswith__true(void)
     struct my_string1_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string1 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string1, "Hello, World!");
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello, World!");
     struct my_string2_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string2 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string2, ", World!");
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, ", World!");
 
     NK_TEST__EXPECT_BOOL(true);
-    NK_TEST__ACTUAL_BOOL(nk_string__endswith(&my_string1.string, &my_string2.string));
+    NK_TEST__ACTUAL_BOOL(nk_string__endswith(&my_string1.array, &my_string2.array));
 #undef TEST_STRING_SIZE
 }
 
@@ -259,14 +412,14 @@ test__endswith__false__smaller_length(void)
     struct my_string1_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string1 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string1, "Hello, World!");
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello, World!");
     struct my_string2_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string2 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string2, ", World");
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, ", World");
 
     NK_TEST__EXPECT_BOOL(false);
-    NK_TEST__ACTUAL_BOOL(nk_string__endswith(&my_string1.string, &my_string2.string));
+    NK_TEST__ACTUAL_BOOL(nk_string__endswith(&my_string1.array, &my_string2.array));
 #undef TEST_STRING_SIZE
 }
 
@@ -277,14 +430,14 @@ test__endswith__false__bigger_length(void)
     struct my_string1_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string1 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string1, "Hello, World!");
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello, World!");
     struct my_string2_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string2 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string2, "Ooo Hello, World!");
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, "Ooo Hello, World!");
 
     NK_TEST__EXPECT_BOOL(false);
-    NK_TEST__ACTUAL_BOOL(nk_string__endswith(&my_string1.string, &my_string2.string));
+    NK_TEST__ACTUAL_BOOL(nk_string__endswith(&my_string1.array, &my_string2.array));
 #undef TEST_STRING_SIZE
 }
 
@@ -295,19 +448,19 @@ test__rstrip(void)
     struct my_string1_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string1 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string1, "Hello, World!");
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello, World!");
     struct my_string2_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string2 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string2, ", World!");
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, ", World!");
     struct my_string3_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string3 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string3, "Hello");
+    NK_STRING__BUCKET_INITIALIZER(&my_string3, "Hello");
 
-    nk_string__rstrip(&my_string1.string, &my_string2.string);
+    nk_string__rstrip(&my_string1.array, &my_string2.array);
     NK_TEST__EXPECT_BOOL(true);
-    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.string, &my_string3.string));
+    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string3.array));
 #undef TEST_STRING_SIZE
 }
 
@@ -318,15 +471,15 @@ test__lower(void)
     struct my_string1_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string1 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string1, "Hello, World!");
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello, World!");
     struct my_string2_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string2 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string2, "hello, world!");
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, "hello, world!");
 
-    nk_string__lower(&my_string1.string);
+    nk_string__lower(&my_string1.array);
     NK_TEST__EXPECT_BOOL(true);
-    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.string, &my_string2.string));
+    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string2.array));
 #undef TEST_STRING_SIZE
 }
 
@@ -337,15 +490,15 @@ test__upper(void)
     struct my_string1_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string1 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string1, "Hello, World!");
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello, World!");
     struct my_string2_type
         NK_STRING__BUCKET_T(TEST_STRING_SIZE)
     my_string2 =
-    NK_STRING__BUCKET_INITIALIZER_FROM(&my_string2, "HELLO, WORLD!");
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, "HELLO, WORLD!");
 
-    nk_string__upper(&my_string1.string);
+    nk_string__upper(&my_string1.array);
     NK_TEST__EXPECT_BOOL(true);
-    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.string, &my_string2.string));
+    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string2.array));
 #undef TEST_STRING_SIZE
 }
 
@@ -353,10 +506,19 @@ void
 test_nk_string(void)
 {
     static const struct nk_testsuite__test tests[] = {
-    NK_TEST__TEST(test__construction__initializer),
-    NK_TEST__TEST(test__construction__initialize),
-    NK_TEST__TEST(test__bucket_construction__initializer),
-    NK_TEST__TEST(test__bucket_construction__initializer_from),
+    NK_TEST__TEST(test__construction__initializer_0),
+    NK_TEST__TEST(test__construction__initializer_4),
+    NK_TEST__TEST(test__construction__initializer_empty),
+    NK_TEST__TEST(test__construction__initialize_0),
+    NK_TEST__TEST(test__construction__initialize_4),
+    NK_TEST__TEST(test__construction__initialize_empty),
+    NK_TEST__TEST(test__bucket_construction__initializer_0),
+    NK_TEST__TEST(test__bucket_construction__initializer_4),
+    NK_TEST__TEST(test__bucket_construction__initializer_empty),
+    NK_TEST__TEST(test__bucket_construction__initialize_0),
+    NK_TEST__TEST(test__bucket_construction__initialize_4),
+    NK_TEST__TEST(test__bucket_construction__initialize_empty),
+    NK_TEST__TEST(test__bucket_construction__initialize_with),
     NK_TEST__TEST(test__is_equal__true__same_size),
     NK_TEST__TEST(test__is_equal__true__different_size),
     NK_TEST__TEST(test__is_equal__false__same_size),

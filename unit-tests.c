@@ -11,6 +11,7 @@
 #include "test_cases/test_nk_fqueue.h"
 #include "test_cases/test_nk_string.h"
 #include "test_cases/test_nk_manchester.h"
+#include "test_cases/test_nk_convert.h"
 
 int
 main(int argc, char **argv)
@@ -26,6 +27,7 @@ main(int argc, char **argv)
     test_nk_fqueue();
     test_nk_string();
     test_nk_manchester();
+    test_nk_convert();
 
     return nk_testsuite__epilogue();
 }
