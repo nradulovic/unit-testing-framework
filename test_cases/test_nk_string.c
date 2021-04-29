@@ -388,6 +388,60 @@ test__contains__false__bigger_length(void)
 }
 
 static void
+test__startswith__true(void)
+{
+#define TEST_STRING_SIZE 20
+    struct my_string1_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string1 =
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello, World!");
+    struct my_string2_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string2 =
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, "Hello, ");
+
+    NK_TEST__EXPECT_BOOL(true);
+    NK_TEST__ACTUAL_BOOL(nk_string__startswith(&my_string1.array, &my_string2.array));
+#undef TEST_STRING_SIZE
+}
+
+static void
+test__startswith__false__smaller_length(void)
+{
+#define TEST_STRING_SIZE 20
+    struct my_string1_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string1 =
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello, World!");
+    struct my_string2_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string2 =
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, "Hello ");
+
+    NK_TEST__EXPECT_BOOL(false);
+    NK_TEST__ACTUAL_BOOL(nk_string__startswith(&my_string1.array, &my_string2.array));
+#undef TEST_STRING_SIZE
+}
+
+static void
+test__startswith__false__bigger_length(void)
+{
+#define TEST_STRING_SIZE 20
+    struct my_string1_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string1 =
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello, World!");
+    struct my_string2_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string2 =
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, "Hello, World! oOo");
+
+    NK_TEST__EXPECT_BOOL(false);
+    NK_TEST__ACTUAL_BOOL(nk_string__startswith(&my_string1.array, &my_string2.array));
+#undef TEST_STRING_SIZE
+}
+
+static void
 test__endswith__true(void)
 {
 #define TEST_STRING_SIZE 20
@@ -465,6 +519,29 @@ test__rstrip(void)
 }
 
 static void
+test__lstrip(void)
+{
+#define TEST_STRING_SIZE 20
+    struct my_string1_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string1 =
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello, World!");
+    struct my_string2_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string2 =
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, "Hello, ");
+    struct my_string3_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string3 =
+    NK_STRING__BUCKET_INITIALIZER(&my_string3, "World!");
+
+    nk_string__lstrip(&my_string1.array, &my_string2.array);
+    NK_TEST__EXPECT_BOOL(true);
+    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string3.array));
+#undef TEST_STRING_SIZE
+}
+
+static void
 test__lower(void)
 {
 #define TEST_STRING_SIZE 20
@@ -502,6 +579,59 @@ test__upper(void)
 #undef TEST_STRING_SIZE
 }
 
+static void
+test__clear_all(void)
+{
+#define TEST_STRING_SIZE 20
+    struct my_string1_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string1 =
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello, World!");
+
+    nk_string__clear_all(&my_string1.array);
+    NK_TEST__EXPECT_SIZE(0u);
+    NK_TEST__ACTUAL_SIZE(my_string1.array.length);
+#undef TEST_STRING_SIZE
+}
+
+static void
+test__append(void)
+{
+#define TEST_STRING_SIZE 20
+    struct my_string1_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string1 =
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello");
+    struct my_string1_type my_string2 =
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, ", World!");
+    struct my_string1_type my_string3 =
+    NK_STRING__BUCKET_INITIALIZER(&my_string3, "Hello, World!");
+
+    nk_string__append(&my_string1.array, &my_string2.array);
+    NK_TEST__EXPECT_BOOL(true);
+    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string3.array));
+#undef TEST_STRING_SIZE
+}
+
+static void
+test__copy(void)
+{
+#define TEST_STRING_SIZE 20
+    struct my_string1_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string1 =
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello");
+    struct my_string1_type my_string2 =
+    NK_STRING__BUCKET_INITIALIZER(&my_string2, ", World!");
+    struct my_string1_type my_string3 =
+    NK_STRING__BUCKET_INITIALIZER(&my_string3, ", World!");
+
+    nk_string__copy(&my_string1.array, &my_string2.array);
+    NK_TEST__EXPECT_BOOL(true);
+    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string3.array));
+#undef TEST_STRING_SIZE
+}
+
 void
 test_nk_string(void)
 {
@@ -527,12 +657,19 @@ test_nk_string(void)
     NK_TEST__TEST(test__contains__true),
     NK_TEST__TEST(test__contains__false__smaller_length),
     NK_TEST__TEST(test__contains__false__bigger_length),
+    NK_TEST__TEST(test__startswith__true),
+    NK_TEST__TEST(test__startswith__false__smaller_length),
+    NK_TEST__TEST(test__startswith__false__bigger_length),
     NK_TEST__TEST(test__endswith__true),
     NK_TEST__TEST(test__endswith__false__smaller_length),
     NK_TEST__TEST(test__endswith__false__bigger_length),
     NK_TEST__TEST(test__rstrip),
+    NK_TEST__TEST(test__lstrip),
     NK_TEST__TEST(test__lower),
     NK_TEST__TEST(test__upper),
+    NK_TEST__TEST(test__clear_all),
+    NK_TEST__TEST(test__append),
+    NK_TEST__TEST(test__copy),
     NK_TEST__TEST_TERMINATE() };
     nk_test__run_fixture(tests, NULL, NULL, NK_TESTSUITE__FIXTURE_NAME(none));
 }
