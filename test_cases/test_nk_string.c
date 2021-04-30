@@ -542,6 +542,24 @@ test__lstrip(void)
 }
 
 static void
+test__lstrip_same_string(void)
+{
+#define TEST_STRING_SIZE 20
+    struct my_string1_type
+        NK_STRING__BUCKET_T(TEST_STRING_SIZE)
+    my_string1 =
+    NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello, World!");
+    struct my_string1_type my_string2 = NK_STRING__BUCKET_INITIALIZER(&my_string2, "World!");
+    struct nk_string strip;
+
+    strip = nk_string__view(&my_string1.array, 0, 7);
+    nk_string__lstrip(&my_string1.array, &strip);
+    NK_TEST__EXPECT_BOOL(true);
+    NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string2.array));
+#undef TEST_STRING_SIZE
+}
+
+static void
 test__lower(void)
 {
 #define TEST_STRING_SIZE 20
@@ -665,6 +683,7 @@ test_nk_string(void)
     NK_TEST__TEST(test__endswith__false__bigger_length),
     NK_TEST__TEST(test__rstrip),
     NK_TEST__TEST(test__lstrip),
+    NK_TEST__TEST(test__lstrip_same_string),
     NK_TEST__TEST(test__lower),
     NK_TEST__TEST(test__upper),
     NK_TEST__TEST(test__clear_all),
