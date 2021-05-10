@@ -23,7 +23,7 @@ test__construction__initializer_0(void)
     my_array = NK_ARRAY__INITIALIZER(items_buffer, 0u);
 
     NK_TEST__EXPECT_SIZE(sizeof(TEST_ITEM_TYPE));
-    NK_TEST__ACTUAL_SIZE(nk_array__item_size(&my_array));
+    NK_TEST__ACTUAL_SIZE(NK_ARRAY__ITEM_SIZE(&my_array));
     NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
     NK_TEST__ACTUAL_SIZE(my_array.item_no);
     NK_TEST__EXPECT_SIZE(0u);
@@ -45,7 +45,7 @@ test__construction__initializer_4(void)
     my_array = NK_ARRAY__INITIALIZER(items_buffer, 4);
 
     NK_TEST__EXPECT_SIZE(sizeof(TEST_ITEM_TYPE));
-    NK_TEST__ACTUAL_SIZE(nk_array__item_size(&my_array));
+    NK_TEST__ACTUAL_SIZE(NK_ARRAY__ITEM_SIZE(&my_array));
     NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
     NK_TEST__ACTUAL_SIZE(my_array.item_no);
     NK_TEST__EXPECT_SIZE(4u);
@@ -71,7 +71,7 @@ test__construction__initializer_empty(void)
     my_array = NK_ARRAY__INITIALIZER_EMPTY(items_buffer);
 
     NK_TEST__EXPECT_SIZE(sizeof(TEST_ITEM_TYPE));
-    NK_TEST__ACTUAL_SIZE(nk_array__item_size(&my_array));
+    NK_TEST__ACTUAL_SIZE(NK_ARRAY__ITEM_SIZE(&my_array));
     NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
     NK_TEST__ACTUAL_SIZE(my_array.item_no);
     NK_TEST__EXPECT_SIZE(0u);
@@ -94,7 +94,7 @@ test__construction__initialize_0(void)
     /* Initialize the array */
     NK_ARRAY__INITIALIZE(&my_array, TEST_ITEM_NO, items_buffer, 0u);
     NK_TEST__EXPECT_SIZE(sizeof(TEST_ITEM_TYPE));
-    NK_TEST__ACTUAL_SIZE(nk_array__item_size(&my_array));
+    NK_TEST__ACTUAL_SIZE(NK_ARRAY__ITEM_SIZE(&my_array));
     NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
     NK_TEST__ACTUAL_SIZE(my_array.item_no);
     NK_TEST__EXPECT_SIZE(0u);
@@ -117,7 +117,7 @@ test__construction__initialize_4(void)
     /* Initialize the array */
     NK_ARRAY__INITIALIZE(&my_array, TEST_ITEM_NO, items_buffer, 4u);
     NK_TEST__EXPECT_SIZE(sizeof(TEST_ITEM_TYPE));
-    NK_TEST__ACTUAL_SIZE(nk_array__item_size(&my_array));
+    NK_TEST__ACTUAL_SIZE(NK_ARRAY__ITEM_SIZE(&my_array));
     NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
     NK_TEST__ACTUAL_SIZE(my_array.item_no);
     NK_TEST__EXPECT_SIZE(4u);
@@ -145,7 +145,7 @@ test__construction__initialize_empty(void)
     /* Initialize the array */
     NK_ARRAY__INITIALIZE_EMPTY(&my_array, NK_BITS__ARRAY_SIZE(items_buffer), items_buffer);
     NK_TEST__EXPECT_SIZE(sizeof(TEST_ITEM_TYPE));
-    NK_TEST__ACTUAL_SIZE(nk_array__item_size(&my_array));
+    NK_TEST__ACTUAL_SIZE(NK_ARRAY__ITEM_SIZE(&my_array));
     NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
     NK_TEST__ACTUAL_SIZE(my_array.item_no);
     NK_TEST__EXPECT_SIZE(0u);
@@ -168,7 +168,7 @@ test__construction__initialize_with(void)
     /* Initialize the array */
     NK_ARRAY__INITIALIZE_WITH(&my_array, items_buffer, 4u);
     NK_TEST__EXPECT_SIZE(sizeof(TEST_ITEM_TYPE));
-    NK_TEST__ACTUAL_SIZE(nk_array__item_size(&my_array));
+    NK_TEST__ACTUAL_SIZE(NK_ARRAY__ITEM_SIZE(&my_array));
     NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
     NK_TEST__ACTUAL_SIZE(my_array.item_no);
     NK_TEST__EXPECT_SIZE(4u);
@@ -195,7 +195,7 @@ test__construction__initialize_empty_with(void)
     /* Initialize the array */
     NK_ARRAY__INITIALIZE_EMPTY_WITH(&my_array, items_buffer);
     NK_TEST__EXPECT_SIZE(sizeof(TEST_ITEM_TYPE));
-    NK_TEST__ACTUAL_SIZE(nk_array__item_size(&my_array));
+    NK_TEST__ACTUAL_SIZE(NK_ARRAY__ITEM_SIZE(&my_array));
     NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
     NK_TEST__ACTUAL_SIZE(my_array.item_no);
     NK_TEST__EXPECT_SIZE(0u);
@@ -297,7 +297,7 @@ test__bucket__construction__initializer_0(void)
     my_array = NK_ARRAY__BUCKET_INITIALIZER(&my_array, 0u, { 0 });
 
     NK_TEST__EXPECT_SIZE(sizeof(TEST_ITEM_TYPE));
-    NK_TEST__ACTUAL_SIZE(nk_array__item_size(&my_array.array));
+    NK_TEST__ACTUAL_SIZE(NK_ARRAY__ITEM_SIZE(&my_array.array));
     NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
     NK_TEST__ACTUAL_SIZE(my_array.array.item_no);
     NK_TEST__EXPECT_SIZE(0u);
@@ -321,7 +321,7 @@ test__bucket__construction__initializer_4(void)
     my_array = NK_ARRAY__BUCKET_INITIALIZER(&my_array, 4u, { 0, 1, 2, 3 });
 
     NK_TEST__EXPECT_SIZE(sizeof(TEST_ITEM_TYPE));
-    NK_TEST__ACTUAL_SIZE(nk_array__item_size(&my_array.array));
+    NK_TEST__ACTUAL_SIZE(NK_ARRAY__ITEM_SIZE(&my_array.array));
     NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
     NK_TEST__ACTUAL_SIZE(my_array.array.item_no);
     NK_TEST__EXPECT_SIZE(4u);
@@ -341,7 +341,7 @@ test__bucket__construction__initializer_empty(void)
     my_array = NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&my_array);
 
     NK_TEST__EXPECT_SIZE(sizeof(TEST_ITEM_TYPE));
-    NK_TEST__ACTUAL_SIZE(nk_array__item_size(&my_array.array));
+    NK_TEST__ACTUAL_SIZE(NK_ARRAY__ITEM_SIZE(&my_array.array));
     NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
     NK_TEST__ACTUAL_SIZE(my_array.array.item_no);
     NK_TEST__EXPECT_SIZE(0u);
@@ -359,9 +359,11 @@ test__bucket__construction__initialize_0(void)
     struct my_ptr_array
         NK_ARRAY__BUCKET_T(TEST_ITEM_TYPE, TEST_ITEM_NO)
     my_array;
+
     NK_ARRAY__BUCKET_INITIALIZE(&my_array, a_buffer, 0u);
+
     NK_TEST__EXPECT_SIZE(sizeof(TEST_ITEM_TYPE));
-    NK_TEST__ACTUAL_SIZE(nk_array__item_size(&my_array.array));
+    NK_TEST__ACTUAL_SIZE(NK_ARRAY__ITEM_SIZE(&my_array.array));
     NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
     NK_TEST__ACTUAL_SIZE(my_array.array.item_no);
     NK_TEST__EXPECT_SIZE(0u);
@@ -379,9 +381,11 @@ test__bucket__construction__initialize_4(void)
     struct my_ptr_array
         NK_ARRAY__BUCKET_T(TEST_ITEM_TYPE, TEST_ITEM_NO)
     my_array;
+
     NK_ARRAY__BUCKET_INITIALIZE(&my_array, a_buffer, NK_BITS__ARRAY_SIZE(a_buffer));
+
     NK_TEST__EXPECT_SIZE(sizeof(TEST_ITEM_TYPE));
-    NK_TEST__ACTUAL_SIZE(nk_array__item_size(&my_array.array));
+    NK_TEST__ACTUAL_SIZE(NK_ARRAY__ITEM_SIZE(&my_array.array));
     NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
     NK_TEST__ACTUAL_SIZE(my_array.array.item_no);
     NK_TEST__EXPECT_SIZE(4u);
@@ -402,9 +406,11 @@ test__bucket__construction__initialize_empty(void)
     struct my_ptr_array
         NK_ARRAY__BUCKET_T(TEST_ITEM_TYPE, TEST_ITEM_NO)
     my_array;
+
     NK_ARRAY__BUCKET_INITIALIZE_EMPTY(&my_array);
+
     NK_TEST__EXPECT_SIZE(sizeof(TEST_ITEM_TYPE));
-    NK_TEST__ACTUAL_SIZE(nk_array__item_size(&my_array.array));
+    NK_TEST__ACTUAL_SIZE(NK_ARRAY__ITEM_SIZE(&my_array.array));
     NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
     NK_TEST__ACTUAL_SIZE(my_array.array.item_no);
     NK_TEST__EXPECT_SIZE(0u);
@@ -422,9 +428,11 @@ test__bucket__construction__initialize_with(void)
     struct my_ptr_array
         NK_ARRAY__BUCKET_T(TEST_ITEM_TYPE, TEST_ITEM_NO)
     my_array;
+
     NK_ARRAY__BUCKET_INITIALIZE_WITH(&my_array, c_array);
+
     NK_TEST__EXPECT_SIZE(sizeof(TEST_ITEM_TYPE));
-    NK_TEST__ACTUAL_SIZE(nk_array__item_size(&my_array.array));
+    NK_TEST__ACTUAL_SIZE(NK_ARRAY__ITEM_SIZE(&my_array.array));
     NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
     NK_TEST__ACTUAL_SIZE(my_array.array.item_no);
     NK_TEST__EXPECT_SIZE(8u);

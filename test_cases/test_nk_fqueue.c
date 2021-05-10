@@ -22,7 +22,7 @@ test__construction__initializer(void)
     my_int_queue = NK_FQUEUE__INITIALIZER(items_buffer);
 
     NK_TEST__EXPECT_SIZE(sizeof(TEST_ITEM_TYPE));
-    NK_TEST__ACTUAL_SIZE(nk_fqueue__item_size(&my_int_queue));
+    NK_TEST__ACTUAL_SIZE(NK_FQUEUE__ITEM_SIZE(&my_int_queue));
     NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
     NK_TEST__ACTUAL_SIZE(nk_fqueue__item_no(&my_int_queue));
 #undef TEST_ITEM_TYPE
@@ -42,7 +42,7 @@ test__construction__initialize(void)
 
     NK_FQUEUE__INITIALIZE(&my_int_queue, TEST_ITEM_NO, items_buffer);
     NK_TEST__EXPECT_SIZE(sizeof(TEST_ITEM_TYPE));
-    NK_TEST__ACTUAL_SIZE(nk_fqueue__item_size(&my_int_queue));
+    NK_TEST__ACTUAL_SIZE(NK_FQUEUE__ITEM_SIZE(&my_int_queue));
     NK_TEST__EXPECT_SIZE(TEST_ITEM_NO);
     NK_TEST__ACTUAL_SIZE(nk_fqueue__item_no(&my_int_queue));
     for (size_t i = 0u; i < nk_fqueue__item_no(&my_int_queue); i++) {
@@ -88,6 +88,7 @@ test_nk_fqueue(void)
     NK_TEST__TEST(test__construction__initializer),
     NK_TEST__TEST(test__construction__initialize),
     NK_TEST__TEST(test__put),
+    NK_TEST__TEST(test__put_get__multiple),
     NK_TEST__TEST_TERMINATE() };
     nk_test__run_fixture(tests, NULL, NULL, NK_TESTSUITE__FIXTURE_NAME(none));
 }

@@ -72,6 +72,7 @@ test__construction__initialize_0(void)
     struct nk_string my_string;
 
     nk_string__initialize(&my_string, string_buffer, sizeof(string_buffer), 0u);
+
     NK_TEST__EXPECT_SIZE(0u);
     NK_TEST__ACTUAL_SIZE(my_string.length);
     NK_TEST__EXPECT_SIZE(TEST_STRING_SIZE);
@@ -88,6 +89,7 @@ test__construction__initialize_4(void)
     struct nk_string my_string;
 
     nk_string__initialize(&my_string, string_buffer, sizeof(string_buffer), 4u);
+
     NK_TEST__EXPECT_SIZE(4u);
     NK_TEST__ACTUAL_SIZE(my_string.length);
     NK_TEST__EXPECT_SIZE(TEST_STRING_SIZE);
@@ -112,6 +114,7 @@ test__construction__initialize_empty(void)
     struct nk_string my_string;
 
     nk_string__initialize_empty(&my_string, string_buffer, sizeof(string_buffer));
+
     NK_TEST__EXPECT_SIZE(0u);
     NK_TEST__ACTUAL_SIZE(my_string.length);
     NK_TEST__EXPECT_SIZE(TEST_STRING_SIZE);
@@ -490,8 +493,10 @@ test__endswith__false__bigger_length(void)
     my_string2 =
     NK_STRING__BUCKET_INITIALIZER(&my_string2, "Ooo Hello, World!");
 
+    bool result = nk_string__endswith(&my_string1.array, &my_string2.array);
+
     NK_TEST__EXPECT_BOOL(false);
-    NK_TEST__ACTUAL_BOOL(nk_string__endswith(&my_string1.array, &my_string2.array));
+    NK_TEST__ACTUAL_BOOL(result);
 #undef TEST_STRING_SIZE
 }
 
@@ -513,6 +518,7 @@ test__rstrip(void)
     NK_STRING__BUCKET_INITIALIZER(&my_string3, "Hello");
 
     nk_string__rstrip(&my_string1.array, &my_string2.array);
+
     NK_TEST__EXPECT_BOOL(true);
     NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string3.array));
 #undef TEST_STRING_SIZE
@@ -536,6 +542,7 @@ test__lstrip(void)
     NK_STRING__BUCKET_INITIALIZER(&my_string3, "World!");
 
     nk_string__lstrip(&my_string1.array, &my_string2.array);
+
     NK_TEST__EXPECT_BOOL(true);
     NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string3.array));
 #undef TEST_STRING_SIZE
@@ -554,6 +561,7 @@ test__lstrip_same_string(void)
 
     strip = nk_string__view(&my_string1.array, 0, 7);
     nk_string__lstrip(&my_string1.array, &strip);
+
     NK_TEST__EXPECT_BOOL(true);
     NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string2.array));
 #undef TEST_STRING_SIZE
@@ -573,6 +581,7 @@ test__lower(void)
     NK_STRING__BUCKET_INITIALIZER(&my_string2, "hello, world!");
 
     nk_string__lower(&my_string1.array);
+
     NK_TEST__EXPECT_BOOL(true);
     NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string2.array));
 #undef TEST_STRING_SIZE
@@ -592,6 +601,7 @@ test__upper(void)
     NK_STRING__BUCKET_INITIALIZER(&my_string2, "HELLO, WORLD!");
 
     nk_string__upper(&my_string1.array);
+
     NK_TEST__EXPECT_BOOL(true);
     NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string2.array));
 #undef TEST_STRING_SIZE
@@ -607,6 +617,7 @@ test__clear_all(void)
     NK_STRING__BUCKET_INITIALIZER(&my_string1, "Hello, World!");
 
     nk_string__clear_all(&my_string1.array);
+
     NK_TEST__EXPECT_SIZE(0u);
     NK_TEST__ACTUAL_SIZE(my_string1.array.length);
 #undef TEST_STRING_SIZE
@@ -626,6 +637,7 @@ test__append(void)
     NK_STRING__BUCKET_INITIALIZER(&my_string3, "Hello, World!");
 
     nk_string__append(&my_string1.array, &my_string2.array);
+
     NK_TEST__EXPECT_BOOL(true);
     NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string3.array));
 #undef TEST_STRING_SIZE
@@ -645,6 +657,7 @@ test__copy(void)
     NK_STRING__BUCKET_INITIALIZER(&my_string3, ", World!");
 
     nk_string__copy(&my_string1.array, &my_string2.array);
+
     NK_TEST__EXPECT_BOOL(true);
     NK_TEST__ACTUAL_BOOL(nk_string__is_equal(&my_string1.array, &my_string3.array));
 #undef TEST_STRING_SIZE

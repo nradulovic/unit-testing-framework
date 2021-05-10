@@ -32,91 +32,91 @@ extern "C" {
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.size = (a_number);                                              \
-        np_testsuite__expect(val, NP_TESTSUITE__TYPE_SIZE);                 \
+        nk_test__p__expect(val, NP_TESTSUITE__TYPE_SIZE);                 \
     } while (0)
 
 #define NK_TEST__EXPECT_UINT(a_number)                                      \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.ui = (a_number);                                                \
-        np_testsuite__expect(val, NP_TESTSUITE__TYPE_UINT);                 \
+        nk_test__p__expect(val, NP_TESTSUITE__TYPE_UINT);                 \
     } while (0)
 
 #define NK_TEST__EXPECT_INT(a_number)                                       \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.si = (a_number);                                                \
-        np_testsuite__expect(val, NP_TESTSUITE__TYPE_INT);                  \
+        nk_test__p__expect(val, NP_TESTSUITE__TYPE_INT);                  \
     } while (0)
 
 #define NK_TESTSUITE__EXPECT_PTR(a_pointer)                                 \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.ptr = (a_pointer);                                              \
-        np_testsuite__expect(val, NP_TESTSUITE__TYPE_PTR);                  \
+        nk_test__p__expect(val, NP_TESTSUITE__TYPE_PTR);                  \
     } while (0)
 
 #define NK_TESTSUITE__EXPECT_STR(a_string)                                  \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.str = (a_string);                                               \
-        np_testsuite__expect(val, NP_TESTSUITE__TYPE_STR);                  \
+        nk_test__p__expect(val, NP_TESTSUITE__TYPE_STR);                  \
     } while (0)
 
 #define NK_TEST__EXPECT_BOOL(a_bool)                                        \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.b = (a_bool);                                                   \
-        np_testsuite__expect(val, NP_TESTSUITE__TYPE_BOOL);                 \
+        nk_test__p__expect(val, NP_TESTSUITE__TYPE_BOOL);                 \
     } while (0)
 
 #define NK_TESTSUITE__NOT_EXPECT_SIZE(a_number)                             \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.size = (a_number);                                              \
-        np_testsuite__expect(val, NP_TESTSUITE__TYPE_NOT_SIZE);             \
+        nk_test__p__expect(val, NP_TESTSUITE__TYPE_NOT_SIZE);             \
     } while (0)
 
 #define NK_TESTSUITE__NOT_EXPECT_UINT(a_number)                             \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.ui = (a_number);                                                \
-        np_testsuite__expect(val, NP_TESTSUITE__TYPE_NOT_UINT);             \
+        nk_test__p__expect(val, NP_TESTSUITE__TYPE_NOT_UINT);             \
     } while (0)
 
 #define NK_TESTSUITE__NOT_EXPECT_INT(a_number)                              \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.si = (a_number);                                                \
-        np_testsuite__expect(val, NP_TESTSUITE__TYPE_NOT_INT);              \
+        nk_test__p__expect(val, NP_TESTSUITE__TYPE_NOT_INT);              \
     } while (0)
 
 #define NK_TESTSUITE__NOT_EXPECT_PTR(a_pointer)                             \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.ptr = (a_pointer);                                              \
-        np_testsuite__expect(val, NP_TESTSUITE__TYPE_NOT_PTR);              \
+        nk_test__p__expect(val, NP_TESTSUITE__TYPE_NOT_PTR);              \
     } while (0)
 
 #define NK_TESTSUITE__NOT_EXPECT_STR(a_string)                              \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.str = (a_string);                                               \
-        np_testsuite__expect(val, NP_TESTSUITE__TYPE_NOT_STR);              \
+        nk_test__p__expect(val, NP_TESTSUITE__TYPE_NOT_STR);              \
     } while (0)
 
 #define NK_TESTSUITE__NOT_EXPECT_BOOL(a_bool)                               \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.b = (a_bool);                                                   \
-        np_testsuite__expect(val, NP_TESTSUITE__TYPE_NOT_BOOL);             \
+        nk_test__p__expect(val, NP_TESTSUITE__TYPE_NOT_BOOL);             \
     } while (0)
 
 #define NK_TEST__ACTUAL_SIZE(a_number)                                 \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.size = (a_number);                                              \
-        if (np_testsuite__actual(__LINE__, (val))) {                        \
+        if (nk_test__p__actual(__LINE__, (val))) {                        \
             return;                                                         \
         }                                                                   \
     } while (0)
@@ -125,7 +125,7 @@ extern "C" {
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.ui = (a_number);                                                \
-        if (np_testsuite__actual(__LINE__, (val))) {                        \
+        if (nk_test__p__actual(__LINE__, (val))) {                        \
             return;                                                         \
         }                                                                   \
     } while (0)
@@ -134,7 +134,7 @@ extern "C" {
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.si = (a_number);                                                \
-        if (np_testsuite__actual(__LINE__, (val))) {                        \
+        if (nk_test__p__actual(__LINE__, (val))) {                        \
             return;                                                         \
         }                                                                   \
     } while (0)
@@ -143,7 +143,7 @@ extern "C" {
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.ptr = (a_pointer);                                              \
-        if (np_testsuite__actual(__LINE__, (val))) {                        \
+        if (nk_test__p__actual(__LINE__, (val))) {                        \
             return;                                                         \
         }                                                                   \
     } while (0)
@@ -152,7 +152,7 @@ extern "C" {
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.str = (a_string);                                               \
-        if (np_testsuite__actual(__LINE__, (val))) {                        \
+        if (nk_test__p__actual(__LINE__, (val))) {                        \
             return;                                                         \
         }                                                                   \
     } while (0)
@@ -161,7 +161,7 @@ extern "C" {
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.b = (a_bool);                                                   \
-        if (np_testsuite__actual(__LINE__, (val))) {                        \
+        if (nk_test__p__actual(__LINE__, (val))) {                        \
             return;                                                         \
         }                                                                   \
     } while (0)
@@ -206,7 +206,7 @@ union np_testsuite__test_val
     bool b;
 };
 
-void nk_testsuite__setup(const struct nk_testsuite__config * config);
+void nk_test__setup(const struct nk_testsuite__config * config);
 
 void nk_test__run_fixture(
         const struct nk_testsuite__test * array,
@@ -214,11 +214,11 @@ void nk_test__run_fixture(
         void (* teardown)(void),
         const char * name);
 
-int nk_testsuite__epilogue(void);
+int nk_test__epilogue(void);
 
-void np_testsuite__expect(union np_testsuite__test_val value, enum np_testsuite__type type);
+void nk_test__p__expect(union np_testsuite__test_val value, enum np_testsuite__type type);
 
-bool np_testsuite__actual(uint32_t line, union np_testsuite__test_val value);
+bool nk_test__p__actual(uint32_t line, union np_testsuite__test_val value);
 
 #ifdef __cplusplus
 }
