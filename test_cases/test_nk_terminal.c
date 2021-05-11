@@ -35,6 +35,11 @@ simple__command_function(void *terminal_context,
         *command += 11;
     }
     nk_string__append_literal(output, NK_STRING__LITERAL("test output"));
+    /* Start from 1 skipping the command name */
+    for (size_t i = 1u; i < args->length; i++) {
+        nk_string__append_literal(output, NK_STRING__LITERAL(" arg:"));
+        nk_string__append(output, &args->items[i]);
+    }
     return NULL;
 }
 
@@ -334,7 +339,6 @@ test__simple__parse_multiple_line_feed(void)
                                                      NK_STRING__LITERAL("\n\n\n\n\ncommand\n\n\ntest output")));
 }
 
-
 static void
 test__simple__parse_command_rn(void)
 {
@@ -371,6 +375,81 @@ test__simple__parse_command_rn(void)
     NK_TEST__ACTUAL_BOOL(nk_string__is_equal_literal(&output.array, NK_STRING__LITERAL("command\r\ntest output")));
 }
 
+static void
+test__simple__parse_command_with_args(void)
+{
+    struct terminal_descriptor terminal;
+    int terminal_context = 4;
+    int command_context = 8;
+    struct working_buffer
+        NK_STRING__BUCKET_T(500)
+    working_buffer = NK_STRING__BUCKET_INITIALIZER_EMPTY(&working_buffer);
+    struct error_message
+        NK_STRING__BUCKET_T(500)
+    error_message = NK_STRING__BUCKET_INITIALIZER_EMPTY(&error_message);
+    struct input
+        NK_STRING__BUCKET_T(500)
+    input = NK_STRING__BUCKET_INITIALIZER(&input, "command arg1 arg2 2\r\n");
+    struct output
+        NK_STRING__BUCKET_T(500)
+    output = NK_STRING__BUCKET_INITIALIZER_EMPTY(&output);
+    struct
+        NK_STRING__BUCKET_T(100)
+    command_id = NK_STRING__BUCKET_INITIALIZER(&command_id, "command");
+    const struct terminal__command_descriptor command_1 = { .command_id = &command_id.array, .interpreter = { .fn =
+                    simple__command_function, .command_context = &command_context } };
+    simple__terminal_commands.array.items[0] = &command_1;
+    simple__terminal_commands.array.length = 1;
+    terminal__init(&terminal, &simple__terminal_commands.array, &working_buffer.array, &error_message.array);
+    terminal__set_terminal_context(&terminal, &terminal_context);
+    terminal__interpret(&terminal, &input.array, &output.array);
+    NK_TEST__EXPECT_INT(14);
+    NK_TEST__ACTUAL_INT(terminal_context);
+    NK_TEST__EXPECT_INT(19);
+    NK_TEST__ACTUAL_INT(command_context);
+    NK_TEST__EXPECT_BOOL(true);
+    NK_TEST__ACTUAL_BOOL(nk_string__is_equal_literal(
+            &output.array, NK_STRING__LITERAL("command arg1 arg2 2\r\ntest output arg:arg1 arg:arg2 arg:2")));
+}
+
+static void
+test__simple__parse_command_with_args_double_space(void)
+{
+    struct terminal_descriptor terminal;
+    int terminal_context = 4;
+    int command_context = 8;
+    struct working_buffer
+        NK_STRING__BUCKET_T(500)
+    working_buffer = NK_STRING__BUCKET_INITIALIZER_EMPTY(&working_buffer);
+    struct error_message
+        NK_STRING__BUCKET_T(500)
+    error_message = NK_STRING__BUCKET_INITIALIZER_EMPTY(&error_message);
+    struct input
+        NK_STRING__BUCKET_T(500)
+    input = NK_STRING__BUCKET_INITIALIZER(&input, "command  arg1    arg2  2\r\n");
+    struct output
+        NK_STRING__BUCKET_T(500)
+    output = NK_STRING__BUCKET_INITIALIZER_EMPTY(&output);
+    struct
+        NK_STRING__BUCKET_T(100)
+    command_id = NK_STRING__BUCKET_INITIALIZER(&command_id, "command");
+    const struct terminal__command_descriptor command_1 = { .command_id = &command_id.array, .interpreter = { .fn =
+                    simple__command_function, .command_context = &command_context } };
+    simple__terminal_commands.array.items[0] = &command_1;
+    simple__terminal_commands.array.length = 1;
+    terminal__init(&terminal, &simple__terminal_commands.array, &working_buffer.array, &error_message.array);
+    terminal__set_terminal_context(&terminal, &terminal_context);
+    terminal__interpret(&terminal, &input.array, &output.array);
+    NK_TEST__EXPECT_INT(14);
+    NK_TEST__ACTUAL_INT(terminal_context);
+    NK_TEST__EXPECT_INT(19);
+    NK_TEST__ACTUAL_INT(command_context);
+    NK_TEST__EXPECT_BOOL(true);
+    NK_TEST__ACTUAL_BOOL(nk_string__is_equal_literal(
+            &output.array, NK_STRING__LITERAL("command  arg1    arg2  2\r\ntest output arg:arg1 arg:arg2 arg:2")));
+}
+
+
 void
 test_nk_terminal(void)
 {
@@ -384,6 +463,8 @@ test_nk_terminal(void)
     NK_TEST__TEST(test__simple__parse_two_commands_line_feed),
     NK_TEST__TEST(test__simple__parse_multiple_line_feed),
     NK_TEST__TEST(test__simple__parse_command_rn),
+    NK_TEST__TEST(test__simple__parse_command_with_args),
+    NK_TEST__TEST(test__simple__parse_command_with_args_double_space),
     NK_TEST__TEST_TERMINATE() };
     nk_test__run_fixture(tests, NULL, NULL, NK_TESTSUITE__FIXTURE_NAME(none));
 }
