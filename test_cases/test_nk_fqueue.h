@@ -2,7 +2,7 @@
  * test_nk_fqueue.h
  *
  *  Created on: Apr 5, 2021
- *      Author: nenad
+ *      Author: (nbr) nenad.b.radulovic@gmail.com
  */
 
 #ifndef TESTS_TEST_CASES_TEST_NK_FQUEUE_H_

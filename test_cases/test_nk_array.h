@@ -2,7 +2,7 @@
  * test_nk_array.hpp
  *
  *  Created on: Feb 21, 2021
- *      Author: nenad
+ *      Author: (nbr) nenad.b.radulovic@gmail.com
  */
 
 #ifndef TESTS_TEST_CASES_TEST_NK_ARRAY_H_

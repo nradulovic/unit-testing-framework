@@ -2,7 +2,7 @@
  * nk_string.h
  *
  *  Created on: Apr 10, 2021
- *      Author: nenad
+ *      Author: (nbr) nenad.b.radulovic@gmail.com
  */
 
 #ifndef TESTS_TEST_CASES_TEST_NK_STRING_H_

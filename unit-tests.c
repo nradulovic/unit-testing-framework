@@ -11,6 +11,7 @@
 #include "test_cases/test_nk_string.h"
 #include "test_cases/test_nk_manchester.h"
 #include "test_cases/test_nk_convert.h"
+#include "test_cases/test_nk_terminal.h"
 
 int
 main(int argc, char **argv)
@@ -27,6 +28,7 @@ main(int argc, char **argv)
     test_nk_string();
     test_nk_manchester();
     test_nk_convert();
+    test_nk_terminal();
 
     return nk_test__epilogue();
 }

@@ -2,7 +2,7 @@
  * test_nk_manchester.h
  *
  *  Created on: Apr 13, 2021
- *      Author: nenad
+ *      Author: (nbr) nenad.b.radulovic@gmail.com
  */
 
 #ifndef TESTS_TEST_CASES_TEST_NK_MANCHESTER_H_
