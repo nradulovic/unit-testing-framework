@@ -25,7 +25,7 @@ test__encode(void)
     destination_data =
     NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&destination_data);
 
-    struct nk_manchester__result result = nk_manchester__encode__biphasel(&source_data.array, &destination_data.array);
+    struct nk_result__size result = nk_manchester__encode__biphasel(&source_data.array, &destination_data.array);
 
     NK_TEST__EXPECT_INT((int ) NK_ERROR__OK);
     NK_TEST__ACTUAL_INT((int ) result.error);
@@ -131,7 +131,7 @@ test__encode__buffer_ovf(void)
     destination_data =
     NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&destination_data);
 
-    struct nk_manchester__result result = nk_manchester__encode__biphasel(&source_data.array, &destination_data.array);
+    struct nk_result__size result = nk_manchester__encode__biphasel(&source_data.array, &destination_data.array);
 
     NK_TEST__EXPECT_INT((int) NK_ERROR__BUFFER_OVF);
     NK_TEST__ACTUAL_INT((int) result.error);
@@ -150,11 +150,11 @@ test__decode__half_byte(void)
         NK_ARRAY__BUCKET_TYPED_T(uint8_t, 1, struct nk_types__array__u8)
     destination_data = NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&destination_data);
 
-    struct nk_manchester__result result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
+    struct nk_result__size result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
 
     NK_TEST__EXPECT_INT((int ) NK_ERROR__OK);
     NK_TEST__ACTUAL_INT((int ) result.error);
-    NK_TEST__EXPECT_SIZE(source_data.array.length);
+    NK_TEST__EXPECT_SIZE(source_data.array.length / 2u);
     NK_TEST__ACTUAL_SIZE(result.value);
     NK_TEST__EXPECT_SIZE(1u);
     NK_TEST__ACTUAL_SIZE(destination_data.array.length);
@@ -182,11 +182,11 @@ test__decode__byte(void)
         NK_ARRAY__BUCKET_TYPED_T(uint8_t, 1, struct nk_types__array__u8)
     destination_data = NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&destination_data);
 
-    struct nk_manchester__result result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
+    struct nk_result__size result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
 
     NK_TEST__EXPECT_INT((int ) NK_ERROR__OK);
     NK_TEST__ACTUAL_INT((int ) result.error);
-    NK_TEST__EXPECT_SIZE(source_data.array.length);
+    NK_TEST__EXPECT_SIZE(source_data.array.length / 2u);
     NK_TEST__ACTUAL_SIZE(result.value);
     NK_TEST__EXPECT_SIZE(1u);
     NK_TEST__ACTUAL_SIZE(destination_data.array.length);
@@ -218,11 +218,11 @@ test__decode__two_bytes(void)
         NK_ARRAY__BUCKET_TYPED_T(uint8_t, 2, struct nk_types__array__u8)
     destination_data = NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&destination_data);
 
-    struct nk_manchester__result result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
+    struct nk_result__size result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
 
     NK_TEST__EXPECT_INT((int ) NK_ERROR__OK);
     NK_TEST__ACTUAL_INT((int ) result.error);
-    NK_TEST__EXPECT_SIZE(source_data.array.length);
+    NK_TEST__EXPECT_SIZE(source_data.array.length / 2u);
     NK_TEST__ACTUAL_SIZE(result.value);
     NK_TEST__EXPECT_SIZE(2u);
     NK_TEST__ACTUAL_SIZE(destination_data.array.length);
@@ -252,7 +252,7 @@ test__decode__invalid_bit0_false(void)
         NK_ARRAY__BUCKET_TYPED_T(uint8_t, 1, struct nk_types__array__u8)
     destination_data = NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&destination_data);
 
-    struct nk_manchester__result result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
+    struct nk_result__size result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
 
     NK_TEST__EXPECT_INT((int ) NK_ERROR__DATA_INVALID);
     NK_TEST__ACTUAL_INT((int ) result.error);
@@ -282,7 +282,7 @@ test__decode__invalid_bit0_true(void)
         NK_ARRAY__BUCKET_TYPED_T(uint8_t, 1, struct nk_types__array__u8)
     destination_data = NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&destination_data);
 
-    struct nk_manchester__result result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
+    struct nk_result__size result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
 
     NK_TEST__EXPECT_INT((int ) NK_ERROR__DATA_INVALID);
     NK_TEST__ACTUAL_INT((int ) result.error);
@@ -312,7 +312,7 @@ test__decode__invalid_bit1_false(void)
         NK_ARRAY__BUCKET_TYPED_T(uint8_t, 1, struct nk_types__array__u8)
     destination_data = NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&destination_data);
 
-    struct nk_manchester__result result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
+    struct nk_result__size result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
 
     NK_TEST__EXPECT_INT((int ) NK_ERROR__DATA_INVALID);
     NK_TEST__ACTUAL_INT((int ) result.error);
@@ -342,7 +342,7 @@ test__decode__invalid_bit1_true(void)
         NK_ARRAY__BUCKET_TYPED_T(uint8_t, 1, struct nk_types__array__u8)
     destination_data = NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&destination_data);
 
-    struct nk_manchester__result result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
+    struct nk_result__size result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
 
     NK_TEST__EXPECT_INT((int ) NK_ERROR__DATA_INVALID);
     NK_TEST__ACTUAL_INT((int ) result.error);
@@ -372,7 +372,7 @@ test__decode__invalid_bit2_false(void)
         NK_ARRAY__BUCKET_TYPED_T(uint8_t, 1, struct nk_types__array__u8)
     destination_data = NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&destination_data);
 
-    struct nk_manchester__result result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
+    struct nk_result__size result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
 
     NK_TEST__EXPECT_INT((int ) NK_ERROR__DATA_INVALID);
     NK_TEST__ACTUAL_INT((int ) result.error);
@@ -402,7 +402,7 @@ test__decode__invalid_bit2_true(void)
         NK_ARRAY__BUCKET_TYPED_T(uint8_t, 2, struct nk_types__array__u8)
     destination_data = NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&destination_data);
 
-    struct nk_manchester__result result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
+    struct nk_result__size result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
 
     NK_TEST__EXPECT_INT((int ) NK_ERROR__DATA_INVALID);
     NK_TEST__ACTUAL_INT((int ) result.error);
@@ -435,7 +435,7 @@ test__decode__invalid_bit8_false(void)
         NK_ARRAY__BUCKET_TYPED_T(uint8_t, 2, struct nk_types__array__u8)
     destination_data = NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&destination_data);
 
-    struct nk_manchester__result result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
+    struct nk_result__size result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
 
     NK_TEST__EXPECT_INT((int ) NK_ERROR__DATA_INVALID);
     NK_TEST__ACTUAL_INT((int ) result.error);
@@ -470,7 +470,7 @@ test__decode__invalid_bit8_true(void)
         NK_ARRAY__BUCKET_TYPED_T(uint8_t, 2, struct nk_types__array__u8)
     destination_data = NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&destination_data);
 
-    struct nk_manchester__result result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
+    struct nk_result__size result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
 
     NK_TEST__EXPECT_INT((int ) NK_ERROR__DATA_INVALID);
     NK_TEST__ACTUAL_INT((int ) result.error);
@@ -506,7 +506,7 @@ test__decode__invalid_bit9_false(void)
         NK_ARRAY__BUCKET_TYPED_T(uint8_t, 2, struct nk_types__array__u8)
     destination_data = NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&destination_data);
 
-    struct nk_manchester__result result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
+    struct nk_result__size result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
 
     NK_TEST__EXPECT_INT((int ) NK_ERROR__DATA_INVALID);
     NK_TEST__ACTUAL_INT((int ) result.error);
@@ -542,7 +542,7 @@ test__decode__invalid_bit9_true(void)
         NK_ARRAY__BUCKET_TYPED_T(uint8_t, 2, struct nk_types__array__u8)
     destination_data = NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&destination_data);
 
-    struct nk_manchester__result result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
+    struct nk_result__size result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
 
     NK_TEST__EXPECT_INT((int ) NK_ERROR__DATA_INVALID);
     NK_TEST__ACTUAL_INT((int ) result.error);
@@ -578,7 +578,7 @@ test__decode__buffer_ovf(void)
         NK_ARRAY__BUCKET_TYPED_T(uint8_t, 1, struct nk_types__array__u8)
     destination_data = NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&destination_data);
 
-    struct nk_manchester__result result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
+    struct nk_result__size result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
 
     NK_TEST__EXPECT_INT((int ) NK_ERROR__BUFFER_OVF);
     NK_TEST__ACTUAL_INT((int ) result.error);
@@ -611,7 +611,7 @@ test__decode__data_odd(void)
         NK_ARRAY__BUCKET_TYPED_T(uint8_t, 2, struct nk_types__array__u8)
     destination_data = NK_ARRAY__BUCKET_INITIALIZER_EMPTY(&destination_data);
 
-    struct nk_manchester__result result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
+    struct nk_result__size result = nk_manchester__decode__biphasel(&source_data.array, &destination_data.array);
 
     NK_TEST__EXPECT_INT((int ) NK_ERROR__DATA_ODD);
     NK_TEST__ACTUAL_INT((int ) result.error);

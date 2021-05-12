@@ -449,6 +449,76 @@ test__simple__parse_command_with_args_double_space(void)
             &output.array, NK_STRING__LITERAL("command  arg1    arg2  2\r\ntest output arg:arg1 arg:arg2 arg:2")));
 }
 
+static void
+test__simple__no_command_found(void)
+{
+    struct terminal_descriptor terminal;
+    int terminal_context = 4;
+    int command_context = 8;
+    struct working_buffer
+        NK_STRING__BUCKET_T(500)
+    working_buffer = NK_STRING__BUCKET_INITIALIZER_EMPTY(&working_buffer);
+    struct error_message
+        NK_STRING__BUCKET_T(500)
+    error_message = NK_STRING__BUCKET_INITIALIZER(&error_message, "unknown command, type 'help' for help\r\n");
+    struct input
+        NK_STRING__BUCKET_T(500)
+    input = NK_STRING__BUCKET_INITIALIZER(&input, "commaand\r\n");
+    struct output
+        NK_STRING__BUCKET_T(500)
+    output = NK_STRING__BUCKET_INITIALIZER_EMPTY(&output);
+    struct
+        NK_STRING__BUCKET_T(100)
+    command_id = NK_STRING__BUCKET_INITIALIZER(&command_id, "command");
+    const struct terminal__command_descriptor command_1 = { .command_id = &command_id.array, .interpreter = { .fn =
+                    simple__command_function, .command_context = &command_context } };
+    simple__terminal_commands.array.items[0] = &command_1;
+    simple__terminal_commands.array.length = 1;
+    terminal__init(&terminal, &simple__terminal_commands.array, &working_buffer.array, &error_message.array);
+    terminal__set_terminal_context(&terminal, &terminal_context);
+    terminal__interpret(&terminal, &input.array, &output.array);
+    NK_TEST__EXPECT_INT(4);
+    NK_TEST__ACTUAL_INT(terminal_context);
+    NK_TEST__EXPECT_INT(8);
+    NK_TEST__ACTUAL_INT(command_context);
+    NK_TEST__EXPECT_BOOL(true);
+    NK_TEST__ACTUAL_BOOL(nk_string__is_equal_literal(
+            &output.array, NK_STRING__LITERAL("commaand\r\nunknown command, type 'help' for help\r\n")));
+}
+
+static void
+test__simple__no_command_found__no_error_set(void)
+{
+    struct terminal_descriptor terminal;
+    int terminal_context = 4;
+    int command_context = 8;
+    struct working_buffer
+        NK_STRING__BUCKET_T(500)
+    working_buffer = NK_STRING__BUCKET_INITIALIZER_EMPTY(&working_buffer);
+    struct input
+        NK_STRING__BUCKET_T(500)
+    input = NK_STRING__BUCKET_INITIALIZER(&input, "commaand\r\n");
+    struct output
+        NK_STRING__BUCKET_T(500)
+    output = NK_STRING__BUCKET_INITIALIZER_EMPTY(&output);
+    struct
+        NK_STRING__BUCKET_T(100)
+    command_id = NK_STRING__BUCKET_INITIALIZER(&command_id, "command");
+    const struct terminal__command_descriptor command_1 = { .command_id = &command_id.array, .interpreter = { .fn =
+                    simple__command_function, .command_context = &command_context } };
+    simple__terminal_commands.array.items[0] = &command_1;
+    simple__terminal_commands.array.length = 1;
+    terminal__init(&terminal, &simple__terminal_commands.array, &working_buffer.array, NULL);
+    terminal__set_terminal_context(&terminal, &terminal_context);
+    terminal__interpret(&terminal, &input.array, &output.array);
+    NK_TEST__EXPECT_INT(4);
+    NK_TEST__ACTUAL_INT(terminal_context);
+    NK_TEST__EXPECT_INT(8);
+    NK_TEST__ACTUAL_INT(command_context);
+    NK_TEST__EXPECT_BOOL(true);
+    NK_TEST__ACTUAL_BOOL(nk_string__is_equal_literal(
+            &output.array, NK_STRING__LITERAL("commaand\r\nunknown command\r\n")));
+}
 
 void
 test_nk_terminal(void)
@@ -465,6 +535,8 @@ test_nk_terminal(void)
     NK_TEST__TEST(test__simple__parse_command_rn),
     NK_TEST__TEST(test__simple__parse_command_with_args),
     NK_TEST__TEST(test__simple__parse_command_with_args_double_space),
+    NK_TEST__TEST(test__simple__no_command_found),
+    NK_TEST__TEST(test__simple__no_command_found__no_error_set),
     NK_TEST__TEST_TERMINATE() };
     nk_test__run_fixture(tests, NULL, NULL, NK_TESTSUITE__FIXTURE_NAME(none));
 }
