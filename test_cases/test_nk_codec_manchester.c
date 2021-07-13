@@ -7,8 +7,7 @@
 
 #include "../nk_test.h"
 #include "test_nk_manchester.h"
-#include "generic/nk_array.h"
-#include "generic/nk_types.h"
+#include "generic/composite/nk_array.h"
 #include "generic/codec/nk_manchester.h"
 
 #if defined(NK_ENABLED_MANCHESTER)

@@ -9,7 +9,6 @@
 #include <stdio.h>
 
 #include "nk_test.h"
-#include "generic/nk_cpu.h"
 
 struct testsuite__context
 {

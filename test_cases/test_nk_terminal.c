@@ -9,7 +9,7 @@
 
 #include "../nk_test.h"
 #include "test_nk_terminal.h"
-#include "generic/nk_string.h"
+#include "generic/composite/nk_string.h"
 #include "generic/terminal/nk_terminal.h"
 
 #if defined(NK_ENABLED_TERMINAL)

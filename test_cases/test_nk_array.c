@@ -7,7 +7,7 @@
 
 #include "../nk_test.h"
 #include "test_nk_array.h"
-#include "generic/nk_array.h"
+#include "generic/composite/nk_array.h"
 
 #if defined(NK_ENABLED_ARRAY)
 static void

@@ -7,7 +7,7 @@
 
 #include "../nk_test.h"
 #include "test_nk_fqueue.h"
-#include "generic/nk_fqueue.h"
+#include "generic/composite/nk_fqueue.h"
 
 #if defined(NK_ENABLED_FQUEUE)
 static void

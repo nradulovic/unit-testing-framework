@@ -7,7 +7,7 @@
 
 #include "../nk_test.h"
 #include "test_nk_string.h"
-#include "generic/nk_string.h"
+#include "generic/composite/nk_string.h"
 
 #if defined(NK_ENABLED_STRING)
 

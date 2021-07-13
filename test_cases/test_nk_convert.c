@@ -7,8 +7,8 @@
 
 #include "../nk_test.h"
 #include "test_nk_convert.h"
-#include "generic/nk_string.h"
-#include "generic/nk_farray.h"
+#include "generic/composite/nk_string.h"
+#include "generic/composite/nk_farray.h"
 #include "generic/convert/nk_convert.h"
 
 static void
