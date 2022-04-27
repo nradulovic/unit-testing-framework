@@ -42,6 +42,42 @@ extern "C" {
         nk_test__p__expect(val, NP_TESTSUITE__TYPE_UINT);                 \
     } while (0)
 
+#define NK_TEST__EQUAL_UINT(expect, actual)                                                     \
+    do {                                                                                        \
+        union np_testsuite__test_val expect_val;                                                \
+        union np_testsuite__test_val actual_val;                                                \
+        expect_val.ui = (expect);                                                               \
+        actual_val.ui = (actual);                                                               \
+        nk_test__p__expect(expect_val, NP_TESTSUITE__TYPE_UINT);                                \
+        if (nk_test__p__actual(__LINE__, (actual_val))) {                                       \
+            return;                                                                             \
+        }                                                                                       \
+    } while (0)
+
+#define NK_TEST__EQUAL_SIZE(expect, actual)                                                     \
+    do {                                                                                        \
+        union np_testsuite__test_val expect_val;                                                \
+        union np_testsuite__test_val actual_val;                                                \
+        expect_val.size = (expect);                                                             \
+        actual_val.size = (actual);                                                             \
+        nk_test__p__expect(expect_val, NP_TESTSUITE__TYPE_SIZE);                                \
+        if (nk_test__p__actual(__LINE__, (actual_val))) {                                       \
+            return;                                                                             \
+        }                                                                                       \
+    } while (0)
+
+#define NK_TEST__EQUAL_PTR(expect, actual)                                                      \
+    do {                                                                                        \
+        union np_testsuite__test_val expect_val;                                                \
+        union np_testsuite__test_val actual_val;                                                \
+        expect_val.ptr = (expect);                                                              \
+        actual_val.ptr = (actual);                                                              \
+        nk_test__p__expect(expect_val, NP_TESTSUITE__TYPE_PTR);                                 \
+        if (nk_test__p__actual(__LINE__, (actual_val))) {                                       \
+            return;                                                                             \
+        }                                                                                       \
+    } while (0)
+
 #define NK_TEST__EXPECT_INT(a_number)                                       \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
@@ -219,6 +255,8 @@ int nk_test__epilogue(void);
 void nk_test__p__expect(union np_testsuite__test_val value, enum np_testsuite__type type);
 
 bool nk_test__p__actual(uint32_t line, union np_testsuite__test_val value);
+
+extern void test_execute(void);
 
 #ifdef __cplusplus
 }
