@@ -85,7 +85,7 @@ extern "C" {
         nk_test__p__expect(val, NP_TESTSUITE__TYPE_INT);                  \
     } while (0)
 
-#define NK_TESTSUITE__EXPECT_PTR(a_pointer)                                 \
+#define NK_TEST__EXPECT_PTR(a_pointer)                                 \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.ptr = (a_pointer);                                              \
@@ -175,7 +175,7 @@ extern "C" {
         }                                                                   \
     } while (0)
 
-#define NK_TESTSUITE__ACTUAL_PTR(a_pointer)                                 \
+#define NK_TEST__ACTUAL_PTR(a_pointer)                                 \
     do {                                                                    \
         union np_testsuite__test_val val;                                   \
         val.ptr = (a_pointer);                                              \
