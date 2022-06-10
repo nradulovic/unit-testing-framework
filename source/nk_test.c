@@ -37,8 +37,9 @@ nk_test__setup(const struct nk_testsuite__config *config)
 }
 
 void
-nk_test__run_fixture(const struct nk_testsuite__test *tests, void
-(*setup)(void),
+nk_test__run_fixture(const struct nk_testsuite__test *tests,
+                     void
+                     (*setup)(void),
                      void
                      (*teardown)(void),
                      const char *name)
@@ -58,6 +59,10 @@ nk_test__run_fixture(const struct nk_testsuite__test *tests, void
     }
 
     for (uint32_t i = 0u; (tests[i].test_fn != NULL) && (tests[i].name != NULL); i++) {
+        uint32_t asserts;
+
+        asserts = g_testsuite__context.total_asserts;
+
         if (g_testsuite__context.config.is_verbose) {
             printf("  %s...", tests[i].name);
             fflush(stdout);
@@ -75,10 +80,19 @@ nk_test__run_fixture(const struct nk_testsuite__test *tests, void
         if (g_testsuite__context.has_failed) {
             break;
         }
+
         if (g_testsuite__context.config.is_verbose) {
-            printf(" PASSED\n");
+            if (g_testsuite__context.total_asserts == asserts) {
+                printf(" SKIPPED\n");
+            } else {
+                printf(" PASSED\n");
+            }
         } else {
-            printf(".");
+            if (g_testsuite__context.total_asserts == asserts) {
+                printf("s");
+            } else {
+                printf(".");
+            }
             fflush(stdout);
         }
     }
@@ -93,7 +107,8 @@ nk_test__epilogue(void)
 }
 
 void
-nk_test__p__expect(union np_testsuite__test_val value, enum np_testsuite__type type)
+nk_test__p__expect(union np_testsuite__test_val value,
+                   enum np_testsuite__type type)
 {
     g_testsuite__context.test_case.type = type;
     g_testsuite__context.test_case.expected = value;
@@ -101,7 +116,8 @@ nk_test__p__expect(union np_testsuite__test_val value, enum np_testsuite__type t
 }
 
 bool
-nk_test__p__actual(uint32_t line, union np_testsuite__test_val actual)
+nk_test__p__actual(uint32_t line,
+                   union np_testsuite__test_val actual)
 {
     switch (g_testsuite__context.test_case.type) {
     case NP_TESTSUITE__TYPE_BOOL:
@@ -170,45 +186,73 @@ nk_test__p__actual(uint32_t line, union np_testsuite__test_val actual)
     }
 
     if (g_testsuite__context.has_failed) {
-        printf("\n\nTest FAILED at %s() in %s:%u\n", g_testsuite__context.test->name, g_testsuite__context.fixture.name,
+        printf("\n\nTest FAILED at %s() in %s:%u\n",
+               g_testsuite__context.test->name,
+               g_testsuite__context.fixture.name,
                line);
 
         switch (g_testsuite__context.test_case.type) {
         case NP_TESTSUITE__TYPE_BOOL:
-            printf("Expected: %u\nActual  : %u\n", g_testsuite__context.test_case.expected.b, actual.b);
+            printf("Expected: %u\nActual  : %u\n",
+                   g_testsuite__context.test_case.expected.b,
+                   actual.b);
             break;
         case NP_TESTSUITE__TYPE_SIZE:
-            printf("Expected: %lu\nActual  : %lu\n", g_testsuite__context.test_case.expected.size, actual.size);
+            printf("Expected: %llu\nActual  : %llu\n",
+                   g_testsuite__context.test_case.expected.size,
+                   actual.size);
             break;
         case NP_TESTSUITE__TYPE_UINT:
-            printf("Expected: %u\nActual  : %u\n", g_testsuite__context.test_case.expected.ui, actual.ui);
+            printf("Expected: %u (0x%x)\nActual  : %u (0x%x)\n",
+                   g_testsuite__context.test_case.expected.ui,
+                   g_testsuite__context.test_case.expected.ui,
+                   actual.ui,
+                   actual.ui);
             break;
         case NP_TESTSUITE__TYPE_INT:
-            printf("Expected: %d\nActual  : %d\n", g_testsuite__context.test_case.expected.si, actual.si);
+            printf("Expected: %d\nActual  : %d\n",
+                   g_testsuite__context.test_case.expected.si,
+                   actual.si);
             break;
         case NP_TESTSUITE__TYPE_PTR:
-            printf("Expected: %p\nActual  : %p\n", g_testsuite__context.test_case.expected.ptr, actual.ptr);
+            printf("Expected: %p\nActual  : %p\n",
+                   g_testsuite__context.test_case.expected.ptr,
+                   actual.ptr);
             break;
         case NP_TESTSUITE__TYPE_STR:
-            printf("Expected: %s\nActual   : %s\n", g_testsuite__context.test_case.expected.str, actual.str);
+            printf("Expected: %s\nActual   : %s\n",
+                   g_testsuite__context.test_case.expected.str,
+                   actual.str);
             break;
         case NP_TESTSUITE__TYPE_NOT_BOOL:
-            printf("Unexpected: %u\nActual    : %u\n", g_testsuite__context.test_case.expected.b, actual.b);
+            printf("Unexpected: %u\nActual    : %u\n",
+                   g_testsuite__context.test_case.expected.b,
+                   actual.b);
             break;
         case NP_TESTSUITE__TYPE_NOT_SIZE:
-            printf("Unexpected: %lu\nActual    : %lu\n", g_testsuite__context.test_case.expected.size, actual.size);
+            printf("Unexpected: %llu\nActual    : %llu\n",
+                   g_testsuite__context.test_case.expected.size,
+                   actual.size);
             break;
         case NP_TESTSUITE__TYPE_NOT_UINT:
-            printf("Unexpected: %u\nActual    : %u\n", g_testsuite__context.test_case.expected.ui, actual.ui);
+            printf("Unexpected: %u\nActual    : %u\n",
+                   g_testsuite__context.test_case.expected.ui,
+                   actual.ui);
             break;
         case NP_TESTSUITE__TYPE_NOT_INT:
-            printf("Unexpected: %d\nActual    : %d\n", g_testsuite__context.test_case.expected.si, actual.si);
+            printf("Unexpected: %d\nActual    : %d\n",
+                   g_testsuite__context.test_case.expected.si,
+                   actual.si);
             break;
         case NP_TESTSUITE__TYPE_NOT_PTR:
-            printf("Unexpected: %p\nActual    : %p\n", g_testsuite__context.test_case.expected.ptr, actual.ptr);
+            printf("Unexpected: %p\nActual    : %p\n",
+                   g_testsuite__context.test_case.expected.ptr,
+                   actual.ptr);
             break;
         case NP_TESTSUITE__TYPE_NOT_STR:
-            printf("Unexpected: %s\nActual    : %s\n", g_testsuite__context.test_case.expected.str, actual.str);
+            printf("Unexpected: %s\nActual    : %s\n",
+                   g_testsuite__context.test_case.expected.str,
+                   actual.str);
             break;
         default:
             printf("Inconsistent test case\n");
