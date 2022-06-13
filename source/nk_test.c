@@ -198,7 +198,7 @@ nk_test__p__actual(uint32_t line,
                    actual.b);
             break;
         case NP_TESTSUITE__TYPE_SIZE:
-            printf("Expected: %llu\nActual  : %llu\n",
+            printf("Expected: %lu\nActual  : %lu\n",
                    g_testsuite__context.test_case.expected.size,
                    actual.size);
             break;
@@ -230,7 +230,7 @@ nk_test__p__actual(uint32_t line,
                    actual.b);
             break;
         case NP_TESTSUITE__TYPE_NOT_SIZE:
-            printf("Unexpected: %llu\nActual    : %llu\n",
+            printf("Unexpected: %lu\nActual    : %lu\n",
                    g_testsuite__context.test_case.expected.size,
                    actual.size);
             break;

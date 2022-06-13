@@ -169,6 +169,30 @@ extern "C" {
 #define NK_TESTSUITE__FIXTURE_NAME(a_name)                                  \
         __FILE__ ":" # a_name
 
+#define NK_TEST__EQUAL_UINT(actual, expected)                               \
+    do {                                                                    \
+        union np_testsuite__test_val actual_val;                            \
+        union np_testsuite__test_val expected_val;                          \
+        actual_val.ui = (actual);                                           \
+        expected_val.ui = (expected);                                       \
+        nk_test__p__expect(expected_val, NP_TESTSUITE__TYPE_UINT);          \
+        if (nk_test__p__actual(__LINE__, (actual_val))) {                   \
+            return;                                                         \
+        }                                                                   \
+    } while (0)
+
+#define NK_TEST__EQUAL_SIZE(actual, expected)                               \
+    do {                                                                    \
+        union np_testsuite__test_val actual_val;                            \
+        union np_testsuite__test_val expected_val;                          \
+        actual_val.size = (actual);                                         \
+        expected_val.size = (expected);                                     \
+        nk_test__p__expect(expected_val, NP_TESTSUITE__TYPE_SIZE);          \
+        if (nk_test__p__actual(__LINE__, (actual_val))) {                   \
+            return;                                                         \
+        }                                                                   \
+    } while (0)
+
 enum np_testsuite__type
 {
     NP_TESTSUITE__TYPE_SIZE,
